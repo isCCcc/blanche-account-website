@@ -1,6 +1,7 @@
 <template>
     <div>
-    $END$
+      Money
+      <Nav/>
     </div>
 </template>
 
