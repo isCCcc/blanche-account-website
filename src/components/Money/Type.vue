@@ -1,15 +1,28 @@
 <template>
   <ul class="type">
-    <li class="selected">支出</li>
-    <li>收入</li>
+    <li :class="type === '-' && 'outcome'" @click="seletType('-')">支出</li>
+    <li :class="type === '+' && 'income'" @click="seletType('+')">收入</li>
   </ul>
 
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Type'
-};
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+@Component
+export default class Type extends Vue {
+  type = '-';
+
+  seletType(type: string) {
+    if (type !== '-' && type !== '+') {
+      throw new Error('type is unkonwn');
+    }
+    this.type = type;
+  }
+
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -28,19 +41,33 @@ export default {
     align-items: center;
     justify-content: center;
     position: relative;
-    &.selected {
+
+    &.outcome {
       color: $color-dark-green;
       background: $color-tint-green;
 
       &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
         background: $color-dark-green;
       }
+    }
+
+    &.income {
+      color: $color-dark-yellow;
+      background: $color-tint-yellow;
+
+      &::after {
+        background: $color-dark-yellow;
+      }
+    }
+
+    &.outcome::after,
+    &.income::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
     }
   }
 }

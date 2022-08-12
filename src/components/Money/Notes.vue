@@ -20,7 +20,7 @@ export default {
   display: flex;
   align-items: center;
   padding-left: 16px;
-  margin: 2px 0;
+  margin: 1px 0;
 
   .name {
     padding-right: 16px;
