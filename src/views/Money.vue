@@ -4,7 +4,7 @@
     <NumberPad/>
     <Type/>
     <Notes/>
-    <Tags/>
+    <Tags :data-source.sync="dataSource"/>
 
   </Layout>
 </template>
@@ -17,7 +17,12 @@ import NumberPad from '@/components/Money/NumberPad.vue';
 
 export default {
   name: 'Money',
-  components: {NumberPad, Type, Notes, Tags}
+  components: {NumberPad, Type, Notes, Tags},
+  data(){
+    return {
+      dataSource:['衣','食','住','行','拍拖']
+    }
+  }
 };
 </script>
 

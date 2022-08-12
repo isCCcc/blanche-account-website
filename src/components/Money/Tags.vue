@@ -1,25 +1,61 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button>新增标签</button>
+      <button @click="createTag">新增标签</button>
     </div>
     <ul class="current">
-      <li class="selected">衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
+      <li v-for="tag in dataSource" :key="tag"
+          :class="{selected:selectedTags.indexOf(tag)>=0}"
+          @click="toggle(tag)">{{ tag }}
+      </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Tags'
-};
+import Vue from 'vue';
+import {Component, Prop} from 'vue-property-decorator';
+
+@Component
+export default class Tags extends Vue {
+  @Prop() readonly dataSource: string[] | undefined;
+  selectedTags: string[] = [];
+
+  // 点击标签
+  toggle(tag: string) {
+    const index = this.selectedTags.indexOf(tag);
+    if (index >= 0) {
+      // 从 selectedTags 里删除标签
+      this.selectedTags.splice(index, 1);
+    } else {
+      // 将 tag 添加到 selectedTags 里面
+      this.selectedTags.push(tag);
+    }
+  }
+
+  // 新增标签
+  createTag() {
+    const name = window.prompt('请输入标签名称');
+    if (name === '') {
+      window.alert('标签名不可为空');
+    } else {
+      if (this.dataSource) {
+        if (this.dataSource.indexOf(name!) >= 0)
+          window.alert('该标签已存在');
+        else
+          this.$emit('update:dataSource', [...this.dataSource, name]);
+      } else {
+        this.$emit('update:dataSource', [name]);
+      }
+
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+
 .tags {
   font-size: 14px;
   padding: 16px;
