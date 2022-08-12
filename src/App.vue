@@ -12,7 +12,7 @@
   font-family: $font-hei;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  //text-align: center;
   color: #333;
   line-height: 1.5;
 }

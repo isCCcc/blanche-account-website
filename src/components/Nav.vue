@@ -25,10 +25,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+
 nav {
+  @extend %innerShadow;
   display: flex;
   flex-direction: row;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+
   font-size: 20px;
 
   > a {
@@ -37,7 +39,7 @@ nav {
   }
 
   > .item {
-    padding: 2px 0;
+    padding: 4px 0;
     width: 33.33333%;
     display: flex;
     flex-direction: column;
@@ -47,11 +49,12 @@ nav {
     .icon {
       width: 32px;
       height: 32px;
+      margin: 2px;
     }
   }
 
   > .item.selected {
-    color: $color-green;
+    color: $color-dark-green;
   }
 }
 </style>
