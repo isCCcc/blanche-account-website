@@ -18,6 +18,7 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Tags extends Vue {
+
   @Prop() readonly dataSource: string[] | undefined;
   selectedTags: string[] = [];
 
@@ -31,6 +32,7 @@ export default class Tags extends Vue {
       // 将 tag 添加到 selectedTags 里面
       this.selectedTags.push(tag);
     }
+    this.$emit('update:tags', this.selectedTags);
   }
 
   // 新增标签
