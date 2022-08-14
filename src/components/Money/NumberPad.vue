@@ -13,7 +13,7 @@
       <button @click="outputContent">7</button>
       <button @click="outputContent">8</button>
       <button @click="outputContent">9</button>
-      <button @click="ok" class="ok">OK</button>
+      <button @click="ok" :class="type==='-'?'ok-outcome':'ok-income'">OK</button>
       <button @click="outputContent" class="zero">0</button>
       <button @click="outputContent">.</button>
     </div>
@@ -22,12 +22,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class NumberPad extends Vue {
   output = '0';
   odd = 0;
+
+  @Prop() readonly type!: string;
 
   outputContent(event: MouseEvent) {
     const num = (event.target as HTMLButtonElement).textContent!;
@@ -71,6 +73,8 @@ export default class NumberPad extends Vue {
 
   ok() {
     this.$emit('update:amount', this.output);
+    this.output = '0';
+    // alert('记录成功')
   }
 }
 </script>
@@ -101,11 +105,19 @@ export default class NumberPad extends Vue {
       border-radius: 20px;
       background: #fff;
 
-      &.ok {
+      &.ok-outcome {
         height: 64px*2;
         float: right;
         color: #fff;
         background: #93d9b4;
+
+      }
+
+      &.ok-income {
+        height: 64px*2;
+        float: right;
+        color: #fff;
+        background: #fbd799;
 
       }
 
