@@ -25,12 +25,13 @@ type Record = {
   amount: number;
   createAt?: Date;
 }
+
 @Component({
   components: {NumberPad, Type, Notes, Tags},
 })
 export default class Money extends Vue {
 
-  dataSource = ['衣', '食', '住', '行', '拍拖'];
+  dataSource: string[] = JSON.parse(window.localStorage.getItem('dataSource') || '[]');
   recordList: Record[] = JSON.parse(window.localStorage.getItem('recordList') || '[]'); // 记录用户的所有数据记录
   record: Record = {tags: [], notes: '', type: '-', amount: 0}; // 当前页面单个数据
 
@@ -55,6 +56,11 @@ export default class Money extends Vue {
   @Watch('recordList')
   onRecordListChanged() {
     window.localStorage.setItem('recordList', JSON.stringify(this.recordList));
+  }
+
+  @Watch('dataSource')
+  onDataSourceChanged() {
+    window.localStorage.setItem('dataSource', JSON.stringify(this.dataSource));
   }
 }
 </script>
