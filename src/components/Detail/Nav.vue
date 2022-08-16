@@ -34,7 +34,7 @@ export default class Nav extends Vue {
 .nav {
   display: flex;
   flex-wrap: wrap;
-  min-height: 20vh;
+  height: 20vh;
   color: #fff;
   text-align: center;
   background-color: $color-dark-green;
