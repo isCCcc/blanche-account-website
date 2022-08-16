@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Money from '@/views/Money.vue';
-import Detail from '@/views/detail.vue';
+import Detail from '@/views/Detail.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
 
