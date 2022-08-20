@@ -24,7 +24,7 @@ type Record = {
   notes: string;
   type: string;
   amount: number;
-  createAt?: Date;
+  createAt?: string;
 }
 
 @Component({
@@ -48,7 +48,7 @@ export default class Money extends Vue {
 
   saveRecord() {
     const rec: Record = JSON.parse(JSON.stringify(this.record));
-    rec.createAt = new Date();
+    rec.createAt = new Date().toISOString();
     this.$store.commit('insertRecord', rec);
     this.$router.replace('/detail');
   }

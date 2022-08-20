@@ -7,7 +7,7 @@ type RecordItem = {
     type: string;
     note: string;
     amount: number;
-    createAt?: Date;
+    createAt?: string;
 }
 type TabBarItem = {
     name: string;
