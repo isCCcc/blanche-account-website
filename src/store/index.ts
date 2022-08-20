@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import idCreator from '@/lib/idCreator';
 
 Vue.use(Vuex);
 
@@ -39,6 +40,7 @@ const store = new Vuex.Store({
             window.localStorage.setItem('tag-list', JSON.stringify(state.tagList));
         },
         insertRecord(state, record) {
+            record.id = idCreator();
             state.recordList.push(record);
             store.commit('saveRecord');
         },
