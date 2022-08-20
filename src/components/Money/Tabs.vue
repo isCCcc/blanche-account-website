@@ -1,6 +1,9 @@
 <template>
-  <ul class="type">
-    <li v-for="item in dataSource" :key="item.value" :class="{selected:item.value===value}"
+  <ul class="tabs">
+    <li v-for="item in dataSource" :key="item.value"
+        class="tabs-item" :class="{
+      [classPrefix+'-tabs-item']:classPrefix,
+      selected:item.value===value}"
         @click="selectToggle(item.value)">{{ item.text }}
     </li>
   </ul>
@@ -15,6 +18,7 @@ type DataSource = { text: string, value: string }
 @Component
 export default class Tabs extends Vue {
   @Prop({required: true, type: Array}) dataSource!: DataSource[];
+  @Prop(String) classPrefix?: string;
   @Prop({required: true, type: String}) value!: string;
 
   selectToggle(value: string) {
@@ -26,13 +30,13 @@ export default class Tabs extends Vue {
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 
-.type {
+.tabs {
   color: #fff;
   display: flex;
   font-size: 24px;
   text-align: center;
 
-  > li {
+  &-item {
     width: 50%;
     height: 64px;
     display: flex;
