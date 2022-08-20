@@ -31,9 +31,6 @@ type Record = {
   components: {NumberPad, Type, Notes, Tags},
 })
 export default class Money extends Vue {
-
-  // dataSource: string[] = JSON.parse(window.localStorage.getItem('dataSource') || '[]');
-  // recordList= this.$store.state.recordList// 记录用户的所有数据记录
   // eslint-disable-next-line no-undef
   record: Record = {tags: [], type: '-', notes: '', amount: 0}; // 当前页面单个数据
 
@@ -53,7 +50,7 @@ export default class Money extends Vue {
     const rec: Record = JSON.parse(JSON.stringify(this.record));
     rec.createAt = new Date();
     this.$store.commit('insertRecord', rec);
-    this.$router.replace('/detail')
+    this.$router.replace('/detail');
   }
 
   // @Watch('recordList')
