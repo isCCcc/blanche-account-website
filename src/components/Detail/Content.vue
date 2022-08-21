@@ -4,7 +4,7 @@
       <ol>
         <li class="title">
           <span class="time">{{ beautify(record.title) }}</span>
-          <span class="money">{{ record.total>0?'+'+ record.total:record.total}}</span>
+          <span class="money">{{ record.total > 0 ? '+' + record.total : record.total }}</span>
         </li>
 
         <ul>
@@ -28,6 +28,7 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
+import {formatFloat} from '@/lib/formatFloat';
 
 @Component
 export default class Content extends Vue {
@@ -59,9 +60,9 @@ export default class Content extends Vue {
     result.map(group => {
       group.total = group.items.reduce((sum, item) => {
         if (item.type === '+') {
-          return sum + item.amount;
+          return formatFloat(sum+item.amount);
         } else {
-          return sum - item.amount;
+          return formatFloat(sum-item.amount);
         }
       }, 0);
     });
@@ -72,11 +73,11 @@ export default class Content extends Vue {
     const createDay = dayjs(string);
     const today = dayjs();
     if (createDay.isSame(today, 'day')) {
-      return createDay.format('M-D')+' 今天';
+      return createDay.format('M-D') + ' 今天';
     } else if (createDay.isSame(today.subtract(1, 'day'), 'day')) {
-      return createDay.format('M-D')+' 昨天';
+      return createDay.format('M-D') + ' 昨天';
     } else if (createDay.isSame(today.subtract(2, 'day'), 'day')) {
-      return createDay.format('M-D')+' 前天';
+      return createDay.format('M-D') + ' 前天';
     } else if (createDay.isSame(today, 'year')) {
       return createDay.format('M-D ');
     } else {
