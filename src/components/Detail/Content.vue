@@ -4,19 +4,19 @@
       <ol>
         <li class="title">
           <span class="time">{{ beautify(record.title) }}</span>
-          <span class="money">- 20.00</span>
+          <span class="money">{{ record.total>0?'+'+ record.total:record.total}}</span>
         </li>
 
-          <ul>
-            <li v-for="item in record.items" :key="item.id">
-              <Icon :name="item.type==='-'? 'outcome':'income'"/>
-              <div class="detail">
-                <span class="msg">{{ item.tags.toString() || showTag(item.type).type }}</span>
-                <span class="money">{{ showTag(item.type).symbol }}{{ item.amount }}</span>
-                <span class="notes">{{ item.notes || '暂无备注' }}</span>
-              </div>
-            </li>
-          </ul>
+        <ul>
+          <li v-for="item in record.items" :key="item.id">
+            <Icon :name="item.type==='-'? 'outcome':'income'"/>
+            <div class="detail">
+              <span class="msg">{{ item.tags.toString() || showTag(item.type).type }}</span>
+              <span class="money">{{ showTag(item.type).symbol }}{{ item.amount }}</span>
+              <span class="notes">{{ item.notes || '暂无备注' }}</span>
+            </div>
+          </li>
+        </ul>
 
       </ol>
     </div>
@@ -27,6 +27,7 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import dayjs from 'dayjs';
+import clone from '@/lib/clone';
 
 @Component
 export default class Content extends Vue {
@@ -34,30 +35,50 @@ export default class Content extends Vue {
 
   get result() {
     const {recordList} = this;
-    // eslint-disable-next-line no-undef
-    type HashTableValue = { title: string, items: RecordItem[] }
-    const hashTable: { [key: string]: HashTableValue } = {};
+    if (recordList.length === 0) return [];
 
-    for (let i = 0; i < recordList.length; i++) {
-      const [date, time] = recordList[i].createAt.split('T');
-      hashTable[date] = hashTable[date] || {title: date, items: []};
-      hashTable[date].items.push(recordList[i]);
+    const newList = clone(recordList)
+        .sort((a: RecordItem, b: RecordItem) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
+    type Result = { title: string, total?: number, items: RecordItem[] }[]
+    const result: Result = [{
+      title: dayjs(newList[0].createAt).format('YYYY-MM-DD'),
+      items: [newList[0]]
+    }];
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = result[result.length - 1];
+      if (dayjs(last.title).isSame(current.createAt, 'day')) {
+        result[result.length - 1].items.push(newList[i]);
+      } else {
+        result.push({
+          title: dayjs(newList[i].createAt).format('YYYY-MM-DD'),
+          items: [newList[i]]
+        });
+      }
     }
-    console.log(hashTable);
-    return hashTable;
+    result.map(group => {
+      group.total = group.items.reduce((sum, item) => {
+        if (item.type === '+') {
+          return sum + item.amount;
+        } else {
+          return sum - item.amount;
+        }
+      }, 0);
+    });
+    return result;
   }
 
   beautify(string: string) {
     const createDay = dayjs(string);
     const today = dayjs();
     if (createDay.isSame(today, 'day')) {
-      return '今天';
+      return createDay.format('M-D')+' 今天';
     } else if (createDay.isSame(today.subtract(1, 'day'), 'day')) {
-      return '昨天';
+      return createDay.format('M-D')+' 昨天';
     } else if (createDay.isSame(today.subtract(2, 'day'), 'day')) {
-      return '前天';
+      return createDay.format('M-D')+' 前天';
     } else if (createDay.isSame(today, 'year')) {
-      return createDay.format('M-D');
+      return createDay.format('M-D ');
     } else {
       return createDay.format('YYYY-M-D');
     }
@@ -65,9 +86,9 @@ export default class Content extends Vue {
 
   showTag(tag: string) {
     if (tag === '-') {
-      return {type:'支出',symbol:'-'};
+      return {type: '支出', symbol: '-'};
     } else
-      return {type: '收入',symbol: '+'};
+      return {type: '收入', symbol: '+'};
   }
 }
 </script>
@@ -105,6 +126,7 @@ export default class Content extends Vue {
 
       ul {
         padding-top: 10px;
+
         li {
           padding: 0px 20px 10px 20px;
           display: flex;
@@ -136,6 +158,7 @@ export default class Content extends Vue {
               width: 100%;
               color: $color-dark-gray;
               font-size: 12px;
+              overflow: auto;
             }
           }
         }
