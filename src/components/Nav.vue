@@ -10,10 +10,10 @@
       记账
     </router-link>
 
-    <router-link to="statistics" class="item" active-class="selected">
-      <Icon name="statistics"/>
-      统计
-    </router-link>
+<!--    <router-link to="statistics" class="item" active-class="selected">-->
+<!--      <Icon name="statistics"/>-->
+<!--      统计-->
+<!--    </router-link>-->
   </nav>
 </template>
 
@@ -40,7 +40,8 @@ nav {
 
   > .item {
     padding: 4px 0;
-    width: 33.33333%;
+    //width: 33.33333%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;

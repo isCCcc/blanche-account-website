@@ -72,12 +72,11 @@ export default class Content extends Vue {
         if (item.type === '-') {
           return formatFloat(sum + item.amount);
         } else {
-          // return formatFloat(sum - item.amount);
           return sum;
         }
       }, 0);
     });
-    this.$store.state.dailyExpense = result;
+    this.$store.commit('insertDailyExpense',result);
     return result;
   }
 
