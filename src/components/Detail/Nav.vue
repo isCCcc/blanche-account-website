@@ -1,6 +1,6 @@
 <template>
   <div class="nav">
-    <div class="title">B-A 记账本</div>
+    <div class="title">布朗奇记账</div>
     <div class="time">
       <div class="year">2022年</div>
       <div class="month"><span>8</span>月</div>
@@ -15,6 +15,7 @@
         <span class="number">00.00</span>
       </li>
     </ul>
+<!--    {{result}}-->
   </div>
 </template>
 
@@ -24,6 +25,22 @@ import {Component} from 'vue-property-decorator';
 
 @Component
 export default class Nav extends Vue {
+  recordList = this.$store.state.recordList;
+  totalAmount = this.$store.state.totalAmount;
+
+  mounted(){
+    console.log(this.$store.state.dailyExpense);
+  }
+  // get result(){
+  //   if(this.$store.state.result.length===0) {
+  //     // eslint-disable-next-line getter-return
+  //     return ;
+  //   }
+  //   console.log('{{{{{{{{');
+  //   console.log(this.$store.state.result);
+  //
+  //   return this.totalAmount;
+  // }
 
 }
 </script>

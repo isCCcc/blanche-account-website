@@ -8,6 +8,7 @@ type storeState = {
     selectedTags: string[];
     tagList: string[];
     recordList: RecordItem[];
+    dailyExpense:{title:string,items:[],total:number}[];
     // tagListError: '' | 'duplicate';
     // currentRecord: RecordItem | undefined;
     // recordListError: '' | 'notfound';
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
     state: {
         selectedTags: [],
         tagList: JSON.parse(window.localStorage.getItem('tag-list') || '[]'),
-        recordList: JSON.parse(window.localStorage.getItem('record-list') || '[]')
+        recordList: JSON.parse(window.localStorage.getItem('record-list') || '[]'),
+        dailyExpense:[]
     } as storeState,
     mutations: {
         selectedTags(state, tags) {

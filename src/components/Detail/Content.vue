@@ -4,7 +4,7 @@
       <ol>
         <li class="title">
           <span class="time">{{ beautify(record.title) }}</span>
-          <span class="money">{{ record.total > 0 ? '+' + record.total : record.total }}</span>
+          <span class="money">{{ dailyExpense(record.total) }}</span>
         </li>
 
         <ul>
@@ -40,9 +40,10 @@ export default class Content extends Vue {
 
     const newList = clone(recordList)
         .sort((a: RecordItem, b: RecordItem) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
-    type Result = { title: string, total?: number, items: RecordItem[] }[]
+    type Result = { title: string, total: { income: number | 0, outcome: number | 0 }, items: RecordItem[] }[]
     const result: Result = [{
       title: dayjs(newList[0].createAt).format('YYYY-MM-DD'),
+      total: {income: 0, outcome: 0},
       items: [newList[0]]
     }];
     for (let i = 1; i < newList.length; i++) {
@@ -53,20 +54,36 @@ export default class Content extends Vue {
       } else {
         result.push({
           title: dayjs(newList[i].createAt).format('YYYY-MM-DD'),
+          total: {income: 0, outcome: 0},
           items: [newList[i]]
         });
       }
     }
     result.map(group => {
-      group.total = group.items.reduce((sum, item) => {
+      group.total.income = group.items.reduce((sum, item) => {
         if (item.type === '+') {
-          return formatFloat(sum+item.amount);
+          return formatFloat(sum + item.amount);
         } else {
-          return formatFloat(sum-item.amount);
+          // return formatFloat(sum - item.amount);
+          return sum;
+        }
+      }, 0);
+      group.total.outcome = group.items.reduce((sum, item) => {
+        if (item.type === '-') {
+          return formatFloat(sum + item.amount);
+        } else {
+          // return formatFloat(sum - item.amount);
+          return sum;
         }
       }, 0);
     });
+    this.$store.state.dailyExpense = result;
     return result;
+  }
+
+  dailyExpense(item:{income:number,outcome:number}) {
+    const result = formatFloat(item.income - item.outcome);
+    return result >= 0 ? '+' + result : result;
   }
 
   beautify(string: string) {

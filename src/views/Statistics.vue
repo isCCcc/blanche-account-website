@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Tabs :data-source="recordTypeList" :value.sync="type"></Tabs>
-    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"></Tabs>
+<!--    <Tabs class-prefix="interval" :data-source="intervalList" :value.sync="interval"></Tabs>-->
 
     <ol>
       <li v-for="(record,index) in result" :key="index">
@@ -53,7 +53,6 @@ export default class Statistics extends Vue {
       hashTable[date] = hashTable[date] || {title: date, items: []};
       hashTable[date].items.push(recordList[i]);
     }
-    console.log(hashTable);
     return hashTable;
   }
 }
