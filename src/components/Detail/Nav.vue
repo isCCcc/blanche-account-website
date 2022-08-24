@@ -4,6 +4,7 @@
     <div class="time">
       <div class="year">2022年</div>
       <div class="month"><span>8</span>月</div>
+      
     </div>
     <ul class="tabs">
       <li class="item">
@@ -82,7 +83,10 @@ export default class Nav extends Vue {
 .nav {
   display: flex;
   flex-wrap: wrap;
-  height: 20vh;
+  min-height: 20vh;
+  max-height: 40vh;
+  //position: fixed;
+  z-index: 10;
   color: #fff;
   text-align: center;
   background-color: $color-dark-green;

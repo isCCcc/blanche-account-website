@@ -114,10 +114,11 @@ export default class Content extends Vue {
 @import "@/assets/style/helper.scss";
 
 .content {
-  //height: 80vh;
+  min-height: 80vh;
   font-size: 14px;
   display: flex;
   flex-wrap: wrap;
+  flex-grow: 1;
   justify-content: center;
 
 

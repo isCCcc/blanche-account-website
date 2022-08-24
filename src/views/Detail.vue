@@ -21,7 +21,7 @@ export default {
 .layout {
   height: 100vh;
   background-color: #ebebeb;
-  //display: flex;
-  //flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
