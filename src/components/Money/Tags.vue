@@ -19,17 +19,15 @@ import {Component, Prop} from 'vue-property-decorator';
 @Component
 export default class Tags extends Vue {
   tagList = this.$store.state.tagList;
-  selectedTags: string[] = [];
+  selectedTags = '';
 
   // 点击标签
   toggle(tag: string) {
-    const index = this.selectedTags.indexOf(tag);
-    if (index >= 0) {
-      // 从 selectedTags 里删除标签
-      this.selectedTags.splice(index, 1);
-    } else {
-      // 将 tag 添加到 selectedTags 里面
-      this.selectedTags.push(tag);
+    console.log(tag);
+    if(this.selectedTags===tag){
+      this.selectedTags=''
+    }else{
+      this.selectedTags=tag
     }
     this.$emit('update:tags', this.selectedTags);
   }

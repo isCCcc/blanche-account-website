@@ -44,6 +44,9 @@ const store = new Vuex.Store({
         insertRecord(state, record) {
             record.id = idCreator();
             state.recordList.push(record);
+            if(record.tags.length===0){
+                record.tags='其它'
+            }
             store.commit('saveRecord');
         },
         saveRecord(state) {
