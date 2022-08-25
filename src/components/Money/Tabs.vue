@@ -1,9 +1,11 @@
 <template>
-  <ul class="tabs">
+  <ul class="tabs" :class="{income:value==='+',
+      outcome:value==='-'}">
     <li v-for="item in dataSource" :key="item.value"
         class="tabs-item" :class="{
       [classPrefix+'-tabs-item']:classPrefix,
-      selected:item.value===value}"
+      selected:item.value===value
+      }"
         @click="selectToggle(item.value)">{{ item.text }}
     </li>
   </ul>
@@ -36,6 +38,14 @@ export default class Tabs extends Vue {
   font-size: 24px;
   text-align: center;
 
+  &.income {
+    background: $color-dark-yellow;
+  }
+
+  &.outcome {
+    background: $color-dark-green;
+  }
+
   &-item {
     width: 50%;
     height: 64px;
@@ -43,11 +53,10 @@ export default class Tabs extends Vue {
     align-items: center;
     justify-content: center;
     position: relative;
-    background: $color-dark-green;
 
 
     &.selected {
-      opacity: .8;
+      background: rgba(0,0,0,0.1);
     }
   }
 }

@@ -4,9 +4,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 import Charts from '@/components/Statistics/Charts.vue';
 import dayjs from 'dayjs';
+import {EChartsOption} from 'echarts';
 
 let _ = require('lodash');
 
@@ -14,16 +15,19 @@ let _ = require('lodash');
   components: {Charts}
 })
 export default class charts extends Vue {
+  @Prop(String)readonly type!:string;
   dailyExpense = this.$store.state.dailyExpense;
 
-  mounted() {
-    console.log(this.dailyExpense);
-  }
 
   get chartOptions() {
-    console.log(this.keyValueList);
     const keys = this.keyValueList.map((item) => dayjs(item.date).format('M-D'));
-    const outcome = this.keyValueList.map((item) => item.value);
+    const values = this.keyValueList.map((item) => item.value);
+    let c = '#2db970';
+    if(this.type==='-'){
+      c = '#2db970';
+    }else if(this.type==='+'){
+      c = '#f2b52d';
+    }
 
     return {
       title: {
@@ -74,10 +78,10 @@ export default class charts extends Vue {
           name: '消费金额',
           type: 'bar',
           barWidth: '60%',
-          data: outcome,
+          data: values,
           colorBy: 'series',
           itemStyle: {
-            color: '#2db970'
+            color: c,
           }
         }
       ]
@@ -92,7 +96,11 @@ export default class charts extends Vue {
     for (let i = 0; i < day; i++) {
       const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
       const found = _.find(this.dailyExpense, {title: dateString});
-      array.push({date: dateString, value: found ? found.total.outcome : 0});
+      if(this.type==='-'){
+        array.push({date: dateString, value: found ? found.total.outcome : 0});
+      }else if(this.type==='+'){
+        array.push({date: dateString, value: found ? found.total.income : 0});
+      }
     }
     array.sort((a, b) => {
       if (a.date > b.date) {
@@ -103,6 +111,7 @@ export default class charts extends Vue {
     });
     return array;
   }
+
 }
 </script>
 
