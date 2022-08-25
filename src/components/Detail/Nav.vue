@@ -4,7 +4,7 @@
     <div class="time">
       <div class="year">2022年</div>
       <div class="month"><span>8</span>月</div>
-      
+
     </div>
     <ul class="tabs">
       <li class="item">
@@ -63,15 +63,15 @@ export default class Nav extends Vue {
     //  后续可将 time 修改为点击时间
     const time = new Date();
 
-    type Expense={title:string,income:number,outcome:number};
-    let expense:Expense={title:dayjs(time).format('YYYY-MM'),income:0,outcome:0}
+    type Expense = { title: string, income: number, outcome: number };
+    let expense: Expense = {title: dayjs(time).format('YYYY-MM'), income: 0, outcome: 0};
 
-    for (let i = 0; i <result.length;i++){
-      if(dayjs(result[i].title).isSame(time,'month')){
-        expense=result[i];
+    for (let i = 0; i < result.length; i++) {
+      if (dayjs(result[i].title).isSame(time, 'month')) {
+        expense = result[i];
       }
     }
-      return expense;
+    return expense;
   }
 
 }

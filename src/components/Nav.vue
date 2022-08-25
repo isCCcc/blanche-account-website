@@ -10,10 +10,10 @@
       记账
     </router-link>
 
-<!--    <router-link to="statistics" class="item" active-class="selected">-->
-<!--      <Icon name="statistics"/>-->
-<!--      统计-->
-<!--    </router-link>-->
+    <router-link to="statistics" class="item" active-class="selected">
+      <Icon name="statistics"/>
+      统计
+    </router-link>
   </nav>
 </template>
 

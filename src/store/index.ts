@@ -8,7 +8,7 @@ type storeState = {
     selectedTags: string[];
     tagList: string[];
     recordList: RecordItem[];
-    dailyExpense:{title:string,items:[],total:number}[];
+    dailyExpense: { title: string, items: [], total: number }[];
     // tagListError: '' | 'duplicate';
     // currentRecord: RecordItem | undefined;
     // recordListError: '' | 'notfound';
@@ -18,7 +18,7 @@ const store = new Vuex.Store({
         selectedTags: [],
         tagList: JSON.parse(window.localStorage.getItem('tag-list') || '[]'),
         recordList: JSON.parse(window.localStorage.getItem('record-list') || '[]'),
-        dailyExpense:JSON.parse(window.localStorage.getItem('daily-expense') || '[]'),
+        dailyExpense: JSON.parse(window.localStorage.getItem('daily-expense') || '[]'),
     } as storeState,
     mutations: {
         selectedTags(state, tags) {
@@ -50,8 +50,8 @@ const store = new Vuex.Store({
             window.localStorage.setItem('record-list', JSON.stringify(state.recordList));
         },
         insertDailyExpense(state, amount) {
-            state.dailyExpense=amount;
-            store.commit('saveDailyExpense')
+            state.dailyExpense = amount;
+            store.commit('saveDailyExpense');
         },
         saveDailyExpense(state) {
             window.localStorage.setItem('daily-expense', JSON.stringify(state.dailyExpense));
