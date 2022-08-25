@@ -1,7 +1,7 @@
 <template>
   <div>
     <Charts :options="pieChartOptions"/>
-    <Charts :options="chartOptions"/>
+    <Charts :options="barChartOptions"/>
   </div>
 
 </template>
@@ -11,7 +11,6 @@ import Vue from 'vue';
 import {Component, Prop, Watch} from 'vue-property-decorator';
 import Charts from '@/components/Statistics/Charts.vue';
 import dayjs from 'dayjs';
-import {EChartsOption} from 'echarts';
 import clone from '@/lib/clone';
 
 let _ = require('lodash');
@@ -45,8 +44,20 @@ export default class charts extends Vue {
     });
 
     return {
+      title: {
+        show: true,
+        text: '消费项目',
+        left: 20,
+        top: 0,
+        textStyle: {
+          color: '#666',
+          fontWeight: 'normal'
+        }
+      },
       tooltip: {
-        trigger: 'item'
+        show: true,
+        trigger: 'item',
+        alwaysShowContent: false,
       },
       legend: {
         top: '5%',
@@ -54,28 +65,30 @@ export default class charts extends Vue {
       },
       series: [
         {
-          name: 'Access From',
+          name: '金额明细',
           type: 'pie',
+          clickable: false,　　　　　　 //是否开启点击
+          minAngle: 15,           　　 //最小的扇区角度（0 ~ 360），用于防止某个值过小导致扇区太小影响交互
+          avoidLabelOverlap: true,   //是否启用防止标签重叠策略
+          hoverAnimation: false,　　  //是否开启 hover 在扇区上的放大动画效果。
           radius: ['40%', '70%'],
-          avoidLabelOverlap: false,
+          colorBy: 'series',
           itemStyle: {
             borderRadius: 10,
             borderColor: '#fff',
-            borderWidth: 10,
-          },
-          label: {
-            show: false,
-            position: 'center',
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: '40',
-              fontWeight: 'bold'
-            }
+            borderWidth: 2,
+            color: pieColor,
           },
           labelLine: {
-            show: false
+            show: true,
+            lineStyle: {
+              color: '#c7c7c7'
+            }
+          },
+          label: {
+            show: true,
+            position: 'outside',
+            color: '#c7c7c7'
           },
           data: cost
         }
@@ -121,15 +134,10 @@ export default class charts extends Vue {
   }
 
   //柱状图的options
-  get chartOptions() {
-    const keys = this.keyValueList.map((item) => dayjs(item.date).format('M-D'));
-    const values = this.keyValueList.map((item) => item.value);
-    let c = '#2db970';
-    if (this.type === '-') {
-      c = '#2db970';
-    } else if (this.type === '+') {
-      c = '#f2b52d';
-    }
+  get barChartOptions() {
+    const keys = this.barKeyValueList.map((item) => dayjs(item.date).format('M-D'));
+    const values = this.barKeyValueList.map((item) => item.value);
+    const barColor = this.type === '-' ? '#2db970' : '#f2b52d';
 
     return {
       title: {
@@ -146,13 +154,13 @@ export default class charts extends Vue {
         show: true,
         trigger: 'axis',
         triggerOn: 'click',
-        borderColor: 'rgba(50,50,50,0.7)',
+        borderColor: barColor,
         axisPointer: {
           type: 'shadow'
         },
-        backgroundColor: 'rgba(50,50,50,0.7)',
+        backgroundColor: 'rgba(255,255,255,0.6)',
         textStyle: {
-          color: '#fff'
+          color: '#666'
         },
         extraCssText: 'box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);'
       },
@@ -185,7 +193,7 @@ export default class charts extends Vue {
           data: values,
           colorBy: 'series',
           itemStyle: {
-            color: c,
+            color: barColor,
           }
         }
       ]
@@ -193,7 +201,7 @@ export default class charts extends Vue {
   }
 
   //处理柱状图xy轴相关数据
-  get keyValueList() {
+  get barKeyValueList() {
     const today = new Date();
     const array = [];
     const day = parseInt(dayjs(today).format('D'));
