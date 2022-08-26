@@ -1,8 +1,13 @@
 <template>
   <div>
-    <Charts :options="pieChartOptions"/>
-    <Charts :options="barChartOptions"/>
-    <CostList :type="type"></CostList>
+    <template v-if="dailyExpense.length===0">
+      <span class="tip">暂无数据记录,快来记一笔吧！</span>
+    </template>
+    <template v-else>
+      <Charts :options="pieChartOptions"/>
+      <Charts :options="barChartOptions"/>
+      <CostList :type="type"></CostList>
+    </template>
   </div>
 
 </template>
@@ -228,3 +233,13 @@ export default class charts extends Vue {
 
 }
 </script>
+<style lang="scss" scoped>
+.tip{
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  margin: 28px 0;
+  font-size: 20px;
+  color: #333;
+}
+</style>

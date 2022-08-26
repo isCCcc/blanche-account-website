@@ -1,25 +1,30 @@
 <template>
   <div class="content">
-    <div class="wrapper" v-for="(record,index) in result" :key="index">
-      <ol>
-        <li class="title">
-          <span class="time">{{ beautify(record.title) }}</span>
-          <span class="money">{{ dailyExpense(record.total) }}</span>
-        </li>
-
-        <ul>
-          <li v-for="item in record.items" :key="item.id">
-            <Icon :name="item.type==='-'? 'outcome':'income'"/>
-            <div class="detail">
-              <span class="msg">{{ item.tags.toString() || showTag(item.type).type }}</span>
-              <span class="money">{{ showTag(item.type).symbol }}{{ item.amount }}</span>
-              <span class="notes">{{ item.notes || '暂无备注' }}</span>
-            </div>
+    <template v-if="result.length===0">
+      <div class="tip">暂无数据记录,快来记一笔吧！</div>
+    </template>
+    <template v-else>
+      <div class="wrapper" v-for="(record,index) in result" :key="index">
+        <ol>
+          <li class="title">
+            <span class="time">{{ beautify(record.title) }}</span>
+            <span class="money">{{ dailyExpense(record.total) }}</span>
           </li>
-        </ul>
 
-      </ol>
-    </div>
+          <ul>
+            <li v-for="item in record.items" :key="item.id">
+              <Icon :name="item.type==='-'? 'outcome':'income'"/>
+              <div class="detail">
+                <span class="msg">{{ item.tags.toString() || showTag(item.type).type }}</span>
+                <span class="money">{{ showTag(item.type).symbol }}{{ item.amount }}</span>
+                <span class="notes">{{ item.notes || '暂无备注' }}</span>
+              </div>
+            </li>
+          </ul>
+
+        </ol>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -75,11 +80,11 @@ export default class Content extends Vue {
         }
       }, 0);
     });
-    this.$store.commit('insertDailyExpense',result);
+    this.$store.commit('insertDailyExpense', result);
     return result;
   }
 
-  dailyExpense(item:{income:number,outcome:number}) {
+  dailyExpense(item: { income: number, outcome: number }) {
     const result = formatFloat(item.income - item.outcome);
     return result >= 0 ? '+' + result : result;
   }
@@ -120,6 +125,11 @@ export default class Content extends Vue {
   flex-grow: 1;
   justify-content: center;
 
+  .tip{
+    font-size: 20px;
+    margin: 28px;
+    color: #333;
+  }
 
   .wrapper {
     width: 95vw;

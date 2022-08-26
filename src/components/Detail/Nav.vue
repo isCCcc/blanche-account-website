@@ -134,16 +134,20 @@ export default class Nav extends Vue {
       text-align: center;
       flex-wrap: wrap;
       width: 33vw;
+      align-items: center;
 
       .decoration {
         font-size: 14px;
         color: #b3eeca;
+        margin: 0 10px;
+        width: 100%;
 
       }
 
       .number {
         font-size: 20px;
         margin: 12px;
+        width: 100%;
       }
     }
   }
