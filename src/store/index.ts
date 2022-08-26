@@ -16,14 +16,16 @@ type storeState = {
 const store = new Vuex.Store({
     state: {
         selectedTags: [],
-        tagList: JSON.parse(window.localStorage.getItem('tag-list') || '[]'),
+        tagList: JSON.parse(window.localStorage.getItem('tag-list') || '["衣","食","住","行","工资","红包"]'),
         recordList: JSON.parse(window.localStorage.getItem('record-list') || '[]'),
         dailyExpense: JSON.parse(window.localStorage.getItem('daily-expense') || '[]'),
     } as storeState,
     mutations: {
+        initTags(state,tags){
+            window.localStorage.setItem('tag-list', JSON.stringify(tags));
+        },
         selectedTags(state, tags) {
             state.selectedTags = tags;
-
         },
         insertTag(state, tag) {
             if (state.tagList) {

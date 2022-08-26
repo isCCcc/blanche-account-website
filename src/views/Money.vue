@@ -1,12 +1,9 @@
 <template>
   <Layout class-prefix="layout">
-
     <NumberPad :type="record.type" @update:amount="onUpdateAmount" @submit="saveRecord"/>
     <Type :type.sync="record.type"/>
     <Notes @update:notes="onUpdateNotes"/>
     <Tags @update:tags="onUpdateTags"/>
-    <!--    <Tags :data-source.sync="dataSource" @update:tags="onUpdateTags"/>
-    -->
   </Layout>
 </template>
 
@@ -53,10 +50,6 @@ export default class Money extends Vue {
     this.$router.replace('/detail');
   }
 
-  // @Watch('recordList')
-  // onRecordListChanged() {
-  //   window.localStorage.setItem('recordList', JSON.stringify(this.recordList));
-  // }
 }
 </script>
 
