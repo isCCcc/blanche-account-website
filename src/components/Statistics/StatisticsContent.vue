@@ -2,6 +2,7 @@
   <div>
     <Charts :options="pieChartOptions"/>
     <Charts :options="barChartOptions"/>
+    <CostList :type="type"></CostList>
   </div>
 
 </template>
@@ -12,11 +13,12 @@ import {Component, Prop, Watch} from 'vue-property-decorator';
 import Charts from '@/components/Statistics/Charts.vue';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
+import CostList from '@/components/Statistics/CostList.vue';
 
 let _ = require('lodash');
 
 @Component({
-  components: {Charts}
+  components: {CostList, Charts}
 })
 export default class charts extends Vue {
   @Prop(String) readonly type!: string;
