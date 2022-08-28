@@ -1,19 +1,21 @@
 <template>
   <div class="wrapper">
-    <span class="title">金额排行榜</span>
-    <ol>
-      <li v-for="(cost,index) in costList" :key="cost.id">
-        <div class="left">
-          <span class="cost-list">{{ index + 1 }}</span>
-        </div>
-        <div class="right">
-          <span class="tags">{{ cost.tags }}</span>
-          <span class="amount">{{ cost.amount }}</span>
-          <span class="notes">{{ cost.notes }}</span>
-          <span class="createAt">{{ formatDay(cost.createAt) }}</span>
-        </div>
-      </li>
-    </ol>
+    <template v-if="costList.length!==0">
+      <span class="title">金额排行榜</span>
+      <ol>
+        <li v-for="(cost,index) in costList" :key="cost.id">
+          <div class="left">
+            <span class="cost-list">{{ index + 1 }}</span>
+          </div>
+          <div class="right">
+            <span class="tags">{{ cost.tags }}</span>
+            <span class="amount">{{ cost.amount }}</span>
+            <span class="notes">{{ cost.notes }}</span>
+            <span class="createAt">{{ formatDay(cost.createAt) }}</span>
+          </div>
+        </li>
+      </ol>
+    </template>
   </div>
 </template>
 
@@ -41,10 +43,10 @@ export default class CostList extends Vue {
         if (newList[i].notes === '') {
           newList[i].notes = '暂无备注';
         }
-        if(newList[i].type==='+'){
-          newList[i].amount = '+'+newList[i].amount
-        }else if(newList[i].type==='-'){
-          newList[i].amount = '-'+newList[i].amount
+        if (newList[i].type === '+') {
+          newList[i].amount = '+' + newList[i].amount;
+        } else if (newList[i].type === '-') {
+          newList[i].amount = '-' + newList[i].amount;
         }
         costList.push(newList[i]);
       }
@@ -81,6 +83,7 @@ export default class CostList extends Vue {
       position: relative;
       height: 60px;
       line-height: 60px;
+
       .cost-list {
         margin: 0 20px 0 4px;
         position: absolute;
