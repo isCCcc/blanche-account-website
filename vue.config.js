@@ -11,8 +11,8 @@ module.exports = {
             .test(/\.svg$/)
             .include.add(icons).end()  // 仅匹配icons目录
             .use('svg-sprite-loader').loader('svg-sprite-loader').options({extract: false}).end()
-            // .use('svgo-loader').loader('svgo-loader')
-            // .tap(options => ({...options, plugins: [{removeAttrs: {attrs: 'fill'}}]})).end()  // 删除svg默认颜色
+            .use('svgo-loader').loader('svgo-loader')
+            .tap(options => ({...options, plugins: [{removeAttrs: {attrs: 'fill'}}]})).end()  // 删除svg默认颜色
         // 其他svg相关loader排除icons目录
         config.module
             .rule('svg')

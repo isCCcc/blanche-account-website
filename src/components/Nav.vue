@@ -41,7 +41,6 @@ nav {
   .item {
     padding: 4px 0;
     width: 33.33333%;
-    //width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
