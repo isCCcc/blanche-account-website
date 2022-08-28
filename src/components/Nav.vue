@@ -33,15 +33,15 @@ nav {
 
   font-size: 20px;
 
-  > a {
+  a {
     color: #2c3e50;
     text-decoration: none;
   }
 
-  > .item {
+  .item {
     padding: 4px 0;
-    //width: 33.33333%;
-    width: 50%;
+    width: 33.33333%;
+    //width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,10 +52,12 @@ nav {
       height: 32px;
       margin: 2px;
     }
+
+    &.selected {
+      fill: currentColor;
+      color: $color-dark-green;
+    }
   }
 
-  > .item.selected {
-    color: $color-dark-green;
-  }
 }
 </style>
