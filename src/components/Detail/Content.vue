@@ -120,11 +120,9 @@ export default class Content extends Vue {
 .content {
   min-height: 80vh;
   font-size: 14px;
-  display: flex;
-  flex-wrap: wrap;
   flex-grow: 1;
-  justify-content: center;
 
+  position: relative;
   .tip{
     font-size: 20px;
     margin: 28px;
@@ -132,6 +130,9 @@ export default class Content extends Vue {
   }
 
   .wrapper {
+    position: absolute;
+    transform: translate(-50%);
+    left: 50%;
     width: 95vw;
     background-color: #fff;
     margin: 10px 0;
