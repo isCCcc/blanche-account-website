@@ -23,7 +23,6 @@ export default class Tags extends Vue {
 
   // 点击标签
   toggle(tag: string) {
-    console.log(tag);
     if(this.selectedTags===tag){
       this.selectedTags=''
     }else{
