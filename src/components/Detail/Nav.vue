@@ -7,7 +7,7 @@
       </select>
       <div>
         <select class="month" v-model="theMonth">
-          <option v-for="m in months" :key="m" :value="m">{{ m }}</option>
+          <option v-for="m in 12" :key="m" :value="m">{{ beautify(m) }}</option>
         </select>
         <span class="selectMonth">月</span></div>
     </div>
@@ -47,15 +47,11 @@ export default class Nav extends Vue {
     return result;
   }
 
-  get months() {
-    const endMonth = dayjs().month();
-    let m = 0;
-    const result: number[] = [];
-    while (m <= endMonth) {
-      result.push(m + 1);
-      m++;
+  beautify(month:number){
+    if(month<10){
+      return '0'+month;
     }
-    return result;
+    return month;
   }
 
   get result() {
@@ -150,6 +146,7 @@ export default class Nav extends Vue {
 
     option {
       color: #000;
+      font-size: 16px;
     }
 
     .year {
