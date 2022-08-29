@@ -37,7 +37,6 @@ export default class CostList extends Vue {
     newList.sort(function (a: { amount: number; }, b: { amount: number; }) {
       return b.amount - a.amount;
     });
-    console.log(newList);
     for (let i = 0; i < newList.length; i++) {
       if (this.type === newList[i].type) {
         if (newList[i].notes === '') {

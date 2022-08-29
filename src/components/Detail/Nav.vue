@@ -88,7 +88,6 @@ export default class Nav extends Vue {
   flex-wrap: wrap;
   min-height: 20vh;
   max-height: 40vh;
-  //position: fixed;
   z-index: 10;
   color: #fff;
   text-align: center;

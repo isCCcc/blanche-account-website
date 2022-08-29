@@ -1,10 +1,10 @@
 <template>
   <div class="content">
     <template v-if="result.length===0">
-      <div class="tip">暂无数据记录,快来记一笔吧！</div>
+      <p class="tip">暂无数据记录,快来记一笔吧！</p>
     </template>
     <template v-else>
-      <div class="wrapper" v-for="(record,index) in result" :key="index">
+      <div class="wrapper" v-for="(record,index) in result" :key="record.id">
         <ol>
           <li class="title">
             <span class="time">{{ beautify(record.title) }}</span>
@@ -21,7 +21,6 @@
               </div>
             </li>
           </ul>
-
         </ol>
       </div>
     </template>
@@ -39,25 +38,32 @@ import {formatFloat} from '@/lib/formatFloat';
 export default class Content extends Vue {
   recordList = this.$store.state.recordList;
 
+  show(msg) {
+    console.log(msg);
+  }
+
   get result() {
     const {recordList} = this;
     if (recordList.length === 0) return [];
-
     const newList = clone(recordList)
         .sort((a: RecordItem, b: RecordItem) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
-    type Result = { title: string, total: { income: number | 0, outcome: number | 0 }, items: RecordItem[] }[]
+    let id = 0;
+    type Result = { id: number, title: string, total: { income: number | 0, outcome: number | 0 }, items: RecordItem[] }[]
     const result: Result = [{
+      id: id,
       title: dayjs(newList[0].createAt).format('YYYY-MM-DD'),
       total: {income: 0, outcome: 0},
       items: [newList[0]]
     }];
     for (let i = 1; i < newList.length; i++) {
+      id++;
       const current = newList[i];
       const last = result[result.length - 1];
       if (dayjs(last.title).isSame(current.createAt, 'day')) {
         result[result.length - 1].items.push(newList[i]);
       } else {
         result.push({
+          id: id,
           title: dayjs(newList[i].createAt).format('YYYY-MM-DD'),
           total: {income: 0, outcome: 0},
           items: [newList[i]]
@@ -121,12 +127,16 @@ export default class Content extends Vue {
   min-height: 80vh;
   font-size: 14px;
   flex-grow: 1;
-
   position: relative;
-  .tip{
+
+  .tip {
     font-size: 20px;
-    margin: 28px;
+    margin: 28px auto;
     color: #333;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    white-space:nowrap;
   }
 
   .wrapper {
