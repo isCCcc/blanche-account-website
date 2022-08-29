@@ -4,24 +4,26 @@
       <p class="tip">暂无数据记录,快来记一笔吧！</p>
     </template>
     <template v-else>
-      <div class="wrapper" v-for="(record,index) in result" :key="record.id">
-        <ol>
-          <li class="title">
-            <span class="time">{{ beautify(record.title) }}</span>
-            <span class="money">{{ dailyExpense(record.total) }}</span>
-          </li>
-
-          <ul>
-            <li v-for="item in record.items" :key="item.id">
-              <Icon :name="item.type==='-'? 'outcome':'income'"/>
-              <div class="detail">
-                <span class="msg">{{ item.tags.toString() || showTag(item.type).type }}</span>
-                <span class="money">{{ showTag(item.type).symbol }}{{ item.amount }}</span>
-                <span class="notes">{{ item.notes || '暂无备注' }}</span>
-              </div>
+      <div class="wrapper">
+        <div class="item" v-for="(record,index) in result" :key="record.id">
+          <ol>
+            <li class="title">
+              <span class="time">{{ beautify(record.title) }}</span>
+              <span class="money">{{ dailyExpense(record.total) }}</span>
             </li>
-          </ul>
-        </ol>
+
+            <ul>
+              <li v-for="item in record.items" :key="item.id">
+                <Icon :name="item.type==='-'? 'outcome':'income'"/>
+                <div class="detail">
+                  <span class="msg">{{ item.tags.toString() || showTag(item.type).type }}</span>
+                  <span class="money">{{ showTag(item.type).symbol }}{{ item.amount }}</span>
+                  <span class="notes">{{ item.notes || '暂无备注' }}</span>
+                </div>
+              </li>
+            </ul>
+          </ol>
+        </div>
       </div>
     </template>
   </div>
@@ -136,74 +138,78 @@ export default class Content extends Vue {
     position: absolute;
     left: 50%;
     transform: translate(-50%);
-    white-space:nowrap;
+    white-space: nowrap;
   }
 
   .wrapper {
     position: absolute;
     transform: translate(-50%);
     left: 50%;
-    width: 95vw;
-    background-color: #fff;
-    margin: 10px 0;
-    border-radius: 10px;
 
-    ol {
-      .title {
-        padding: 15px;
-        width: 100%;
-        background-color: #fafafa;
-        border-radius: 10px 10px 0 0;
-        position: relative;
+    .item {
+      width: 95vw;
+      background-color: #fff;
+      margin: 10px 0;
+      border-radius: 10px;
 
-        .money {
-          position: absolute;
-          right: 20px;
+      ol {
+        .title {
+          padding: 15px;
+          width: 100%;
+          background-color: #fafafa;
+          border-radius: 10px 10px 0 0;
+          position: relative;
+
+          .money {
+            position: absolute;
+            right: 20px;
+          }
         }
-      }
 
-      ul {
-        padding-top: 10px;
+        ul {
+          padding-top: 10px;
 
-        li {
-          padding: 0px 20px 10px 20px;
-          display: flex;
-
-          .detail {
+          li {
+            padding: 0px 20px 10px 20px;
             display: flex;
-            flex-wrap: wrap;
-            border-bottom: 1px solid $color-dark-gray;
-            width: 100%;
-            padding: 10px;
-            position: relative;
-            font-size: 18px;
 
-            .msg {
-              position: absolute;
-              top: 2px;
-              left: 10px;
-            }
-
-            .money {
-              top: 2px;
-              right: 2px;
-              position: absolute;
-            }
-
-            .notes {
-              position: absolute;
-              bottom: 6px;
+            .detail {
+              display: flex;
+              flex-wrap: wrap;
+              border-bottom: 1px solid $color-dark-gray;
               width: 100%;
-              color: $color-dark-gray;
-              font-size: 12px;
-              overflow: auto;
+              padding: 10px;
+              position: relative;
+              font-size: 18px;
+
+              .msg {
+                position: absolute;
+                top: 2px;
+                left: 10px;
+              }
+
+              .money {
+                top: 2px;
+                right: 2px;
+                position: absolute;
+              }
+
+              .notes {
+                position: absolute;
+                bottom: 6px;
+                width: 100%;
+                color: $color-dark-gray;
+                font-size: 12px;
+                overflow: auto;
+              }
             }
           }
         }
-      }
 
+      }
     }
   }
+
 }
 
 </style>
