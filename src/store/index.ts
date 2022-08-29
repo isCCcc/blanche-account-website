@@ -45,6 +45,7 @@ const store = new Vuex.Store({
         },
         insertRecord(state, record) {
             record.id = idCreator();
+            record.createAt = record.createAt || new Date().toISOString();
             state.recordList.push(record);
             if(record.tags.length===0){
                 record.tags='其它'

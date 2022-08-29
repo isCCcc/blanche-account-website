@@ -1,21 +1,34 @@
 <template>
   <label class="notes">
-    <span class="name">备注</span>
-    <input type="text" v-model="value" placeholder="请于此处输入备注">
+    <span class="name">{{ fieldName }}</span>
+    <template v-if="type==='datetime-local'">
+      <input :type="type" :value="formatDay(value)" :placeholder="placeholder"
+             @input="onValueChanged($event.target.value)">
+    </template>
+    <template v-else>
+      <input :type="type" :value="value" :placeholder="placeholder" @input="onValueChanged($event.target.value)">
+    </template>
   </label>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Watch} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
+import dayjs from 'dayjs';
 
 @Component
 export default class Notes extends Vue {
-  value = '';
+  @Prop() readonly value!: string;
+  @Prop({required: true}) fieldName!: string;
+  @Prop(String) placeholder!: string;
+  @Prop(String) type!: string;
 
-  @Watch('value')
+  formatDay(value: string) {
+    return dayjs(value).format('YYYY-MM-DD HH:mm:ss');
+  }
+
   onValueChanged(value: string) {
-    this.$emit('update:notes', value);
+    this.$emit('update:value', value);
   }
 }
 </script>
