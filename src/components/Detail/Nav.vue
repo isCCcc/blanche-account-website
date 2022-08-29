@@ -2,9 +2,14 @@
   <div class="nav">
     <div class="title">布朗奇记账</div>
     <div class="time">
-      <div class="year">2022年</div>
-      <div class="month"><span>8</span>月</div>
-
+      <select v-model="theYear" class="year">
+        <option v-for="y in years" :key="y" :value="y">{{ y }}年</option>
+      </select>
+      <div>
+        <select class="month" v-model="theMonth">
+          <option v-for="m in months" :key="m" :value="m">{{ m }}</option>
+        </select>
+        <span class="selectMonth">月</span></div>
     </div>
     <ul class="tabs">
       <li class="item">
@@ -21,12 +26,37 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Watch} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 import clone from '@/lib/clone';
 import dayjs from 'dayjs';
 
 @Component
 export default class Nav extends Vue {
+  @Prop() date!:string;
+  theYear = window.localStorage.getItem('year') || dayjs().year().toString();
+  theMonth = window.localStorage.getItem('month') || (dayjs().month() + 1).toString();
+
+  get years() {
+    const endYear = dayjs().year();
+    let y = 2010;
+    const result: number[] = [];
+    while (y <= endYear) {
+      result.push(y);
+      y++;
+    }
+    return result;
+  }
+
+  get months() {
+    const endMonth = dayjs().month();
+    let m = 0;
+    const result: number[] = [];
+    while (m <= endMonth) {
+      result.push(m + 1);
+      m++;
+    }
+    return result;
+  }
 
   get result() {
     const dailyExpense = this.$store.state.dailyExpense;
@@ -60,8 +90,7 @@ export default class Nav extends Vue {
   // 选中特定事件展示的收入和支出
   monthExpense() {
     const {result} = this;
-    //  后续可将 time 修改为点击时间
-    const time = new Date();
+    const time = this.date;
 
     type Expense = { title: string, income: number, outcome: number };
     let expense: Expense = {title: dayjs(time).format('YYYY-MM'), income: 0, outcome: 0};
@@ -77,6 +106,19 @@ export default class Nav extends Vue {
     return expense;
   }
 
+  @Watch('theYear')
+  saveYear(year: string) {
+    let date = dayjs(year.toString().concat('-', this.theMonth.toString())).format('YYYY-MM');
+    window.localStorage.setItem('year', year);
+    this.$emit('update:date',date);
+  }
+
+  @Watch('theMonth')
+  saveMonth(month: string) {
+    let date = dayjs(this.theYear.toString().concat('-', month.toString())).format('YYYY-MM');
+    window.localStorage.setItem('month', month);
+    this.$emit('update:date',date);
+  }
 }
 </script>
 
@@ -106,19 +148,31 @@ export default class Nav extends Vue {
     width: 32vw;
     border-right: 1px dashed #b3eeca;
 
-    > .year {
+    option {
+      color: #000;
+    }
+
+    .year {
+      -webkit-border-radius: 0;
+      -webkit-appearance: none; /*去除下拉框默认样式*/
+      border: 0;
+      background: transparent;
       font-size: 14px;
       color: #b3eeca;
     }
 
-    > .month {
+    .month {
+      -webkit-border-radius: 0;
+      -webkit-appearance: none; /*去除下拉框默认样式*/
+      border: 0;
+      background: transparent;
       padding: 10px;
-      font-size: 18px;
+      font-size: 30px;
+      color: #fff;
+    }
 
-      > span {
-        font-size: 30px;
-        padding: 8px;
-      }
+    > &.selectMonth {
+      font-size: 18px;
     }
   }
 

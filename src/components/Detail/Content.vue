@@ -31,18 +31,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 import {formatFloat} from '@/lib/formatFloat';
 
 @Component
 export default class Content extends Vue {
+  @Prop(String) theDate!:string;
   recordList = this.$store.state.recordList;
-
-  show(msg) {
-    console.log(msg);
-  }
 
   get result() {
     const {recordList} = this;
@@ -51,7 +48,7 @@ export default class Content extends Vue {
         .sort((a: RecordItem, b: RecordItem) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
     let id = 0;
     type Result = { id: number, title: string, total: { income: number | 0, outcome: number | 0 }, items: RecordItem[] }[]
-    const result: Result = [{
+    let result: Result = [{
       id: id,
       title: dayjs(newList[0].createAt).format('YYYY-MM-DD'),
       total: {income: 0, outcome: 0},
@@ -72,6 +69,8 @@ export default class Content extends Vue {
         });
       }
     }
+    // 过滤出特定时间数据
+    result = result.filter(item => dayjs(item.title).isSame(this.theDate, 'month'));
     result.map(group => {
       group.total.income = group.items.reduce((sum, item) => {
         if (item.type === '+') {
@@ -119,6 +118,7 @@ export default class Content extends Vue {
     } else
       return {type: '收入', symbol: '+'};
   }
+
 }
 </script>
 

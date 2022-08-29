@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import idCreator from '@/lib/idCreator';
+import dayjs from 'dayjs';
 
 Vue.use(Vuex);
 
@@ -9,19 +10,18 @@ type storeState = {
     tagList: string[];
     recordList: RecordItem[];
     dailyExpense: { title: string, items: [], total: number }[];
-    // tagListError: '' | 'duplicate';
-    // currentRecord: RecordItem | undefined;
-    // recordListError: '' | 'notfound';
+    theDate: string;
 }
 const store = new Vuex.Store({
     state: {
         selectedTags: [],
-        tagList: JSON.parse(window.localStorage.getItem('tag-list') || '["衣","食","住","行","工资","红包"]'),
+        tagList: JSON.parse(window.localStorage.getItem('tag-list') || '["衣","食","住","行","工资","红包","医疗"]'),
         recordList: JSON.parse(window.localStorage.getItem('record-list') || '[]'),
         dailyExpense: JSON.parse(window.localStorage.getItem('daily-expense') || '[]'),
+        theDate: window.localStorage.getItem('date') || dayjs().format('YYYY-MM')
     } as storeState,
     mutations: {
-        initTags(state,tags){
+        initTags(state, tags) {
             window.localStorage.setItem('tag-list', JSON.stringify(tags));
         },
         selectedTags(state, tags) {
@@ -47,8 +47,8 @@ const store = new Vuex.Store({
             record.id = idCreator();
             record.createAt = record.createAt || new Date().toISOString();
             state.recordList.push(record);
-            if(record.tags.length===0){
-                record.tags='其它'
+            if (record.tags.length === 0) {
+                record.tags = '其它';
             }
             store.commit('saveRecord');
         },
@@ -61,6 +61,10 @@ const store = new Vuex.Store({
         },
         saveDailyExpense(state) {
             window.localStorage.setItem('daily-expense', JSON.stringify(state.dailyExpense));
+        },
+        saveDate(state, date) {
+            state.theDate=date
+            window.localStorage.setItem('date', state.theDate);
         }
     },
     actions: {},
