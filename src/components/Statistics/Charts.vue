@@ -33,7 +33,6 @@ export default class DailyContrast extends Vue {
 .wrapper {
   height: 400px;
   margin: 20px 10px;
-
   border-bottom: 1px solid $color-dark-gray;
 
 }

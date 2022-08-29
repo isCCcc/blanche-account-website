@@ -28,6 +28,7 @@ let _ = require('lodash');
 export default class charts extends Vue {
   @Prop(String) readonly type!: string;
   dailyExpense = this.$store.state.dailyExpense;
+  date = this.$store.state.theDate || new Date();
 
   //饼图的options
   get pieChartOptions() {
@@ -106,8 +107,10 @@ export default class charts extends Vue {
   //处理饼图相关的数据
   get pieKeyValueList() {
     const recordList = this.$store.state.recordList;
-    const newList = clone(recordList);
-    const today = new Date();
+    const cloneList = clone(recordList);
+    type RecordList = { amount: number, createAt: string, id: number, notes: string, tags: string, type: string }
+    let newList = cloneList.filter((item: RecordList) =>
+        dayjs(item.createAt).isSame(this.date, 'month'));
     type ExpenseByTag = { tags: string, income: number, outcome: number }[]
     let expenseByTag: ExpenseByTag = [{tags: newList[0].tags, income: 0, outcome: 0}];
     if (newList[0].type === '-') {
@@ -117,7 +120,7 @@ export default class charts extends Vue {
     }
     for (let i = 1; i < newList.length; i++) {
       let flag = false;
-      if (dayjs(today).isSame(newList[i].createAt, 'month')) {
+      if (dayjs(this.date).isSame(newList[i].createAt, 'month')) {
         for (let j = 0; j < expenseByTag.length; j++) {
           if (newList[i].tags === expenseByTag[j].tags) {
             flag = true;
@@ -209,11 +212,11 @@ export default class charts extends Vue {
 
   //处理柱状图xy轴相关数据
   get barKeyValueList() {
-    const today = new Date();
+    const endDay = dayjs(this.date).endOf('month').format('YYYY-MM-DD');
     const array = [];
-    const day = parseInt(dayjs(today).format('D'));
+    const day = parseInt(dayjs(this.date).endOf('month').format('D'));
     for (let i = 0; i < day; i++) {
-      const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+      const dateString = dayjs(endDay).subtract(i, 'day').format('YYYY-MM-DD');
       const found = _.find(this.dailyExpense, {title: dateString});
       if (this.type === '-') {
         array.push({date: dateString, value: found ? found.total.outcome : 0});
@@ -234,7 +237,7 @@ export default class charts extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.tip{
+.tip {
   display: flex;
   width: 100vw;
   justify-content: center;

@@ -28,11 +28,15 @@ import dayjs from 'dayjs';
 @Component
 export default class CostList extends Vue {
   @Prop(String) readonly type!: string;
+  date = this.$store.state.theDate|| new Date();
 
   //金额排行榜
   get costList() {
     const recordList = this.$store.state.recordList;
-    const newList = clone(recordList);
+    const cloneList = clone(recordList);
+    type RecordList = { amount: number, createAt: string, id: number, notes: string, tags: string, type: string }
+    let newList = cloneList.filter((item: RecordList) =>
+        dayjs(item.createAt).isSame(this.date, 'month'));
     const costList = [];
     newList.sort(function (a: { amount: number; }, b: { amount: number; }) {
       return b.amount - a.amount;
