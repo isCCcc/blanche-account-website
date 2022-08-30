@@ -18,3 +18,16 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app');
+
+if (document.documentElement.clientWidth > 500) {
+    // window.alert('请使用手机扫描右上方二维码打开本页面，以保证浏览效果');
+    const img = document.createElement('img');
+    img.src = '/blancheAcc.png';
+    img.style.width = '100px';
+    img.style.position = 'fixed';
+    img.style.right = '20px';
+    img.style.top = '10px';
+    img.style.zIndex = '100';
+    img.style.boxShadow = '0 0 10px rgba(0,0,0,0.25)';
+    document.body.appendChild(img);
+}

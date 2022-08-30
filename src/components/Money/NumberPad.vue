@@ -97,9 +97,10 @@ export default class NumberPad extends Vue {
     @extend %clearFix;
     background-color: $color-tint-gray;
     padding: 12px 0;
+    width: 100%;
 
     button {
-      width: 25vw;
+      width: 25%;
       height: 64px;
       float: left;
       border: 4px solid $color-tint-gray;

@@ -20,10 +20,12 @@ export default {
   height: 100vh;
   flex-direction: column;
   box-sizing: border-box;
+  overflow: hidden;
 
   .content {
-    overflow: auto;
+    overflow: hidden;
     flex-grow: 1;
+    overflow-y: auto;
   }
 }
 </style>
