@@ -20,10 +20,10 @@ new Vue({
 }).$mount('#app');
 
 if (document.documentElement.clientWidth > 500) {
-    // window.alert('请使用手机扫描右上方二维码打开本页面，以保证浏览效果');
+    window.alert('请使用手机扫描右上方二维码打开本页面，以保证浏览效果');
     const img = document.createElement('img');
-    img.src = '/blancheAcc.png';
-    img.style.width = '100px';
+    img.src = './qrcode.png';
+    img.style.width = '120px';
     img.style.position = 'fixed';
     img.style.right = '20px';
     img.style.top = '10px';

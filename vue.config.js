@@ -4,7 +4,7 @@ module.exports = {
     lintOnSave: false,
     publicPath: process.env.NODE_ENV === 'production'
         ? '/blanche-account-website/'
-        : '/',
+        : './',
 
     chainWebpack: config => {
         const icons = path.resolve(__dirname, 'src', 'assets', 'icons')
